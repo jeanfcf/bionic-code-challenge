@@ -1,0 +1,27 @@
+{
+  "name": "bionic-codechallenge-backend",
+  "version": "1.0.0",
+  "description": "interview code challenge",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeanfcf/bionic-code-challenge.git"
+  },
+  "author": "Jean Felipe Coelho Ferreira < https://github.com/jeanfcf >",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeanfcf/bionic-code-challenge/issues"
+  },
+  "homepage": "https://github.com/jeanfcf/bionic-code-challenge#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.6.4"
+  }
+}
