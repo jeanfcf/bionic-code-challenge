@@ -33,7 +33,7 @@ module.exports = class App {
         "Origin, X-Requested-With, Content-Type, Accept, Authorization"
       );
       if (req.method === "OPTIONS") {
-        res.header("Access-Control-Allow-Methods", "POST,GET");
+        res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
         return res.status(200).send({});
       }
       return next();

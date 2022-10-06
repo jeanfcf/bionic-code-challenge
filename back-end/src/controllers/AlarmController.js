@@ -15,7 +15,7 @@ module.exports = class AlarmController {
         2: "VueJS",
         3: "MongoDB",
         4: "Express",
-        5: "Plugin",
+        5: "Bootstrap",
       };
 
       const alarms = await Alarm.find();

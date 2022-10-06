@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
-
-const Alarm = mongoose.model("Alarm", {
+const { Schema } = mongoose;
+const alarmSchema = new Schema({
   type: Number,
   deviceType: Number,
   serial: String,
   checked: Boolean,
-});
+},
+{ versionKey: false });
+const Alarm = mongoose.model(
+  "Alarm",
+  alarmSchema
+);
 
-module.exports = Alarm
+module.exports = Alarm;
