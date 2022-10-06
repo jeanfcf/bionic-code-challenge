@@ -6,28 +6,26 @@
           v-model="currentPage"
           :total-rows="rows"
           :per-page="perPage"
-        ></b-pagination
-      ></b-col>
+      /></b-col>
       <b-col>
         <b-form-group label="Select a type to filter: ">
           <b-form-select
             label="Type"
-            v-model="filterOptions.type"
-            :options="options.type"
+            v-model="filterOptions.alarmName"
+            :options="options.alarmName"
             size="sm"
-            class="mx-5"
-          ></b-form-select> </b-form-group
+            class="mx-5" /></b-form-group
       ></b-col>
 
       <b-col>
         <b-form-group label="Select a device type to filter: "
           ><b-select
             label="Device Type"
-            v-model="filterOptions.deviceType"
-            :options="options.deviceType"
+            v-model="filterOptions.deviceName"
+            :options="options.deviceName"
             size="sm"
             class="mx-5"
-          ></b-select> </b-form-group
+          /> </b-form-group
       ></b-col>
     </b-row>
 
@@ -41,7 +39,7 @@
           :per-page="perPage"
           :current-page="currentPage"
           responsive
-        ></b-table>
+        />
       </div>
     </b-row>
 
@@ -61,24 +59,18 @@ export default {
       alarms: [],
       filteredAlarms: [],
       windowHeight: window.innerHeight,
-      options: { type: ["none"], deviceType: ["none"] },
-      filterOptions: { type: "none", deviceType: "none" },
+      options: { alarmName: ["none"], deviceName: ["none"] },
+      filterOptions: { alarmName: "none", deviceName: "none" },
       page: 1,
-      perPage: 0,
+      perPage: 5,
       currentPage: 1,
     };
   },
   mounted() {
-    this.perPage = this.windowHeight * 0.01;
-    this.$nextTick(() => {
-      window.addEventListener("resize", this.onResize);
-    });
     this.list();
     this.update();
   },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.onResize);
-  },
+
   computed: {
     rows() {
       return this.filteredAlarms.length;
@@ -93,15 +85,11 @@ export default {
     },
   },
   methods: {
-    onResize: function () {
-      this.windowHeight = window.innerHeight;
-      this.perPage = this.windowHeight * 0.01;
-    },
     reset: async function () {
       try {
         await axios.delete(`http://localhost:8082/alarm`);
-        this.filterOptions.type = "none";
-        this.filterOptions.deviceType = "none";
+        this.filterOptions.alarmName = "none";
+        this.filterOptions.deviceName = "none";
         this.alarms = [];
       } catch (error) {
         console.error(error);
@@ -112,13 +100,13 @@ export default {
         const response = await axios.get(`http://localhost:8082/alarm`);
         this.alarms = response.data;
         this.filteredAlarms = this.filter(this.alarms);
-        this.options.type = [
+        this.options.alarmName = [
           "none",
-          ...this.unique(response.data, "type"),
+          ...this.unique(response.data, "alarmName"),
         ].sort();
-        this.options.deviceType = [
+        this.options.deviceName = [
           "none",
-          ...this.unique(response.data, "deviceType"),
+          ...this.unique(response.data, "deviceName"),
         ].sort();
       } catch (error) {
         console.error(error);
@@ -133,14 +121,14 @@ export default {
     filter: function (all) {
       return all.filter((el) => {
         if (
-          (el.type === this.filterOptions.type &&
-            el.deviceType === this.filterOptions.deviceType) ||
-          (this.filterOptions.type == "none" &&
-            this.filterOptions.deviceType == "none") ||
-          (this.filterOptions.type == "none" &&
-            el.deviceType === this.filterOptions.deviceType) ||
-          (el.type === this.filterOptions.type &&
-            this.filterOptions.deviceType == "none")
+          (el.alarmName === this.filterOptions.alarmName &&
+            el.deviceName === this.filterOptions.deviceName) ||
+          (this.filterOptions.alarmName == "none" &&
+            this.filterOptions.deviceName == "none") ||
+          (this.filterOptions.alarmName == "none" &&
+            el.deviceName === this.filterOptions.deviceName) ||
+          (el.alarmName === this.filterOptions.alarmName &&
+            this.filterOptions.deviceName == "none")
         ) {
           return true;
         } else {
